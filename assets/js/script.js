@@ -1,9 +1,11 @@
+// Creando la clase padre Propietario
 class Propietario {
 	constructor(nombre, direccion, telefono) {
 		this._nombre = nombre
 		this._direccion = direccion
 		this._telefono = telefono
 	}
+ // Getters y Setters
 	get nombre() {
 		return this._nombre
 	}
@@ -22,27 +24,33 @@ class Propietario {
 	set telefono(telefono) {
 		this._telefono = telefono
 	}
+ // Método
 	datosPropietario() {
 		return `El nombre del dueño es: ${this.nombre}.El domicilio es: ${this.direccion} y el numero telefonico de contacto es: ${this.telefono}`
 	}
 }
 
+// Clase Hija Animal
 class Animal extends Propietario {
 	constructor(nombre, direccion, telefono, tipo) {
 		super(nombre, direccion, telefono)
 		this._tipo = tipo
 	}
+  // Getter
 	get tipo() {
 		return this._tipo
 	}
 }
 
+// Clase Nieta
 class Mascota extends Animal {
 	constructor(nombre, direccion, telefono, tipo, nombreM, enfermedad) {
 		super(nombre, direccion, telefono, tipo)
 		this._nombreM = nombreM
 		this._enfermedad = enfermedad
 	}
+
+ // Getters y Setters 
 	get nombreM() {
 		return this._nombreM
 	}
@@ -57,16 +65,34 @@ class Mascota extends Animal {
 	}
 }
 
-const getSelectorById = (id) => document.querySelector(id)
-const getValueById = (id) => getSelectorById(id).value
+// Funciones que acortan el llamado de los ID del DOM y sus valores
+const getSelectorById = id => document.querySelector(id)
+const getValueById = id => getSelectorById(id).value
 
-const form = document.querySelector("form")
-const resultado = document.querySelector("#resultado")
+// Seleccion de elementos del DOM
+const form = getSelectorById("#form")
+const resultado = getSelectorById("#resultado")
 
-const limpiarDom = (item) => {
+// funcion que limpia los datos del doom
+const limpiarDom = item => {
 	item.reset()
 }
 
+// funcion que muestra los datos ingrasados en listas bajo el formulario
+const muestraDatos = animalito => {
+	const a = document.createElement('li')
+	const b = document.createElement('li')
+	a.innerHTML = `${animalito.datosPropietario()}`
+	b.innerHTML = `El tipo de animal es un: ${
+		animalito.tipo
+	}, mientras que el nombre de la mascota es: ${
+		animalito.nombreM
+	} y la enfermedad es: ${animalito.enfermedad}`
+	resultado.appendChild(a)
+	resultado.appendChild(b)
+}
+
+// Funcion de registro
 const registrando = (e) => {
 	e.preventDefault()
 	const propietario = getValueById("#propietario")
@@ -75,6 +101,7 @@ const registrando = (e) => {
 	const tipo = getValueById("#tipo")
 	const nombreMascota = getValueById("#nombre-mascota")
 	const enfermedad = getValueById("#enfermedad")
+	
 	//If y else para instans
 	if (tipo === "gato") {
 		const gato = new Mascota(
@@ -86,11 +113,7 @@ const registrando = (e) => {
 			enfermedad
 		)
 		console.log("gatito creado")
-		resultado.innerHTML = `<li>${gato.datosPropietario()}</li><li> El tipo de animal es un: ${
-			gato.tipo
-		}, mientras que el nombre de la mascota es: ${
-			gato.nombreM
-		} y la enfermedad es: ${gato.enfermedad}</li>`
+		muestraDatos(gato)
 	} else if (tipo === "perro") {
 		const perro = new Mascota(
 			propietario,
@@ -100,11 +123,7 @@ const registrando = (e) => {
 			nombreMascota,
 			enfermedad
 		)
-		resultado.innerHTML = `<li>${perro.datosPropietario()}</li><li> El tipo de animal es un: ${
-			perro.tipo
-		}, mientras que el nombre de la mascota es: ${
-			perro.nombreM
-		} y la enfermedad es: ${perro.enfermedad}</li>`
+		muestraDatos(perro)
 	} else {
 		const conejo = new Mascota(
 			propietario,
@@ -114,11 +133,7 @@ const registrando = (e) => {
 			nombreMascota,
 			enfermedad
 		)
-		resultado.innerHTML = `<li>${conejo.datosPropietario()}</li><li> El tipo de animal es un: ${
-			conejo.tipo
-		}, mientras que el nombre de la mascota es: ${
-			conejo.nombreM
-		} y la enfermedad es: ${conejo.enfermedad}</li>`
+		muestraDatos(conejo)
 	}
 	limpiarDom(form)
 }
